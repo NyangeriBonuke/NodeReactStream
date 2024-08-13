@@ -1,5 +1,5 @@
 const express = require('express')
-const { createReadStream, statSync } = require('fs')
+const { createReadStream, statSync, existsSync } = require('fs')
 const path = require('path')
 
 const app = express()
@@ -16,7 +16,7 @@ app.get('/videos/:filename', (req, res) => {
     const fileSize = stat.size
 
     if(range){
-        let {start, end} = range.replace(/bytes=/, '').split('-')
+        let [start, end] = range.replace(/bytes=/, '').split('-')
         start = parseInt(start, 10)
         end = end ? parseInt(end, 10) : fileSize - 1
         const chunkSize = (end - start ) +  1
